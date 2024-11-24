@@ -4,7 +4,7 @@ const GameDisplayer = ({ randNum }) => {
   const [checkValue, setCheckValue] = useState();
   const [output, setOutput] = useState("Start Guessing");
   const [correctAnswer, setCorrectAnswer] = useState(false);
-  const [score, setScore] = useState(10);
+  const [score, setScore] = useState(20);
   const [highScore, setHighScore] = useState(0);
 
   useEffect(() => {
