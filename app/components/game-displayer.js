@@ -1,16 +1,21 @@
-"use client";
 import React, { useState, useEffect } from "react";
 
 const GameDisplayer = ({ randNum }) => {
   const [checkValue, setCheckValue] = useState();
   const [output, setOutput] = useState("Start Guessing");
   const [correctAnswer, setCorrectAnswer] = useState(false);
-  const [score, setScore] = useState(20);
-  const [highScore, setHighScore] = useState(
-    localStorage.getItem("highScore")
-      ? parseInt(localStorage.getItem("highScore"))
-      : 0
-  );
+  const [score, setScore] = useState(10);
+  const [highScore, setHighScore] = useState(0);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      // Ensure localStorage is available
+      const savedHighScore = localStorage.getItem("highScore");
+      if (savedHighScore) {
+        setHighScore(parseInt(savedHighScore));
+      }
+    }
+  }, []);
 
   const inputHandler = (event) => setCheckValue(parseInt(event.target.value));
   const checkHandler = () => {
@@ -35,12 +40,16 @@ const GameDisplayer = ({ randNum }) => {
   useEffect(() => {
     if (correctAnswer && score > highScore) {
       setHighScore(score);
-      localStorage.setItem("highScore", score.toString());
+      if (typeof window !== "undefined") {
+        localStorage.setItem("highScore", score.toString());
+      }
     }
   }, [correctAnswer, score, highScore]);
 
   const resetLocalStorage = () => {
-    localStorage.removeItem("highScore");
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("highScore");
+    }
     setHighScore(0);
   };
 
